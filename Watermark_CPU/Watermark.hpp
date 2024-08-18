@@ -1,7 +1,7 @@
 #pragma once
 
+#include "pch.h"
 #include "eigen_rgb_array.hpp"
-#include <Eigen/Dense>
 #include <string>
 
 enum MASK_TYPE {

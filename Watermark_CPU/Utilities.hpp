@@ -1,8 +1,8 @@
 #pragma once
+#include "pch.h"
 #include "cimg_init.hpp"
 #include "eigen_rgb_array.hpp"
 #include <chrono>
-#include <Eigen/Dense>
 #include <string>
 
 std::string add_suffix_before_extension(const std::string& file, const std::string& suffix);

@@ -1,5 +1,5 @@
-﻿#pragma warning(disable:4996)
-#define _CRT_SECURE_NO_WARNINGS
+﻿
+#include "pch.h"
 #include "cimg_init.hpp"
 #include "eigen_rgb_array.hpp"
 #include "INIReader.h"
@@ -7,7 +7,6 @@
 #include "Watermark.hpp"
 #include "Watermark_CPU.hpp"
 #include <cstdlib>
-#include <Eigen/Dense>
 #include <exception>
 #include <iomanip>
 #include <iostream>

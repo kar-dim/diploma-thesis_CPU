@@ -1,8 +1,8 @@
-﻿#include "cimg_init.hpp"
+﻿#include "pch.h"
+#include "cimg_init.hpp"
 #include "eigen_rgb_array.hpp"
 #include "Utilities.hpp"
 #include <chrono>
-#include <Eigen/Dense>
 #include <string>
 
 using namespace cimg_library;

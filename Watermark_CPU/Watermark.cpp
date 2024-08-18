@@ -1,7 +1,7 @@
-﻿#include "eigen_rgb_array.hpp"
+﻿#include "pch.h"
+#include "eigen_rgb_array.hpp"
 #include "Watermark.hpp"
 #include <cmath>
-#include <Eigen/Dense>
 #include <fstream>
 #include <memory>
 #include <omp.h>

@@ -50,11 +50,13 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)Watermark_CPU\libs\Eigen;$(SolutionDir)Watermark_CPU\libs\CImg-3.2.2;$(SolutionDir)Watermark_CPU\libs\zlib\include;$(LLVMInstallDir)\lib\clang\17\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <FloatingPointModel>Fast</FloatingPointModel>
-      <AdditionalOptions>-openmp -mavx2 -mfma %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>-openmp -mavx2 -mfma -Wno-pch-date-time %(AdditionalOptions)</AdditionalOptions>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -72,12 +74,14 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)Watermark_CPU\libs\Eigen;$(SolutionDir)Watermark_CPU\libs\CImg-3.2.2;$(SolutionDir)Watermark_CPU\libs\zlib\include;$(LLVMInstallDir)\lib\clang\17\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <FloatingPointModel>Fast</FloatingPointModel>
-      <AdditionalOptions>-openmp -mavx2 -mfma /clang:-O3 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>-openmp -mavx2 -mfma /clang:-O3 -Wno-pch-date-time %(AdditionalOptions)</AdditionalOptions>
       <OpenMPSupport>true</OpenMPSupport>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -92,6 +96,10 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="Utilities.cpp" />
     <ClCompile Include="Watermark.cpp" />
     <ClCompile Include="Watermark_CPU.cpp" />
@@ -103,6 +111,7 @@
     <ClInclude Include="cimg_init.hpp" />
     <ClInclude Include="eigen_rgb_array.hpp" />
     <ClInclude Include="INIReader.h" />
+    <ClInclude Include="pch.h" />
     <ClInclude Include="Utilities.hpp" />
     <ClInclude Include="Watermark.hpp" />
     <ClInclude Include="Watermark_CPU.hpp" />
