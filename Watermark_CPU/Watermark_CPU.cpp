@@ -7,12 +7,11 @@
 #include <cstdlib>
 #include <Eigen/Dense>
 #include <exception>
-#include <iomanip>
+#include <format>
 #include <iostream>
 #include <omp.h>
 #include <string>
 #include <thread>
-#include <ios>
 
 #define R_WEIGHT 0.299f
 #define G_WEIGHT 0.587f
@@ -71,7 +70,7 @@ int main(int argc, char** argv)
 		exit_program(EXIT_FAILURE);
 	}
 
-	cout << "Using " << num_threads << " parallel threads.\n";
+	cout << "Using " << omp_get_num_threads() << " parallel threads.\n";
 	cout << "Each test will be executed " << loops << " times. Average time will be shown below\n";
 	cout << "Image size is: " << rows << " rows and " << cols << " columns\n\n";
 
@@ -96,7 +95,7 @@ int main(int argc, char** argv)
 			timer::end();
 			secs += timer::secs_passed();
 		}
-		cout << "Calculation of NVF mask with " << rows << " rows and " << cols << " columns and parameters:\np = " << p << "  PSNR(dB) = " << psnr << "\n" << execution_time(show_fps, secs / loops) << "\n\n";
+		cout << std::format("Calculation of NVF mask with {} rows and {} columns and parameters:\np = {}  PSNR(dB) = {}\n{}\n\n", rows, cols, p, psnr, execution_time(show_fps, secs / loops));
 		
 		secs = 0;
 		//Prediction error mask calculation
@@ -106,7 +105,7 @@ int main(int argc, char** argv)
 			timer::end();
 			secs += timer::secs_passed();
 		}
-		cout << "Calculation of ME mask with " << rows << " rows and " << cols << " columns and parameters:\np = " << p << "  PSNR(dB) = " << psnr << "\n" << execution_time(show_fps, secs / loops) << "\n\n";
+		cout << std::format("Calculation of ME mask with {} rows and {} columns and parameters:\np = {}  PSNR(dB) = {}\n{}\n\n", rows, cols, p, psnr, execution_time(show_fps, secs / loops));
 
 		const ArrayXXf watermarked_NVF_gray = eigen_rgb_array_to_grayscale_array(watermark_NVF, R_WEIGHT, G_WEIGHT, B_WEIGHT);
 		const ArrayXXf watermarked_ME_gray = eigen_rgb_array_to_grayscale_array(watermark_ME, R_WEIGHT, G_WEIGHT, B_WEIGHT);
@@ -120,7 +119,7 @@ int main(int argc, char** argv)
 			timer::end();
 			secs += timer::secs_passed();
 		}
-		cout << "Calculation of the watermark correlation (NVF) of an image with " << rows << " rows and " << cols << " columns and parameters:\np = " << p << "  PSNR(dB) = " << psnr << "\n" << execution_time(show_fps, secs / loops) << "\n\n";
+		cout << std::format("Calculation of the watermark correlation (NVF) of an image with {} rows and {} columns and parameters:\np = {}  PSNR(dB) = {}\n{}\n\n", rows, cols, p, psnr, execution_time(show_fps, secs / loops));
 
 		secs = 0;
 		//Prediction error mask detection
@@ -130,10 +129,10 @@ int main(int argc, char** argv)
 			timer::end();
 			secs += timer::secs_passed();
 		}
-		cout << "Calculation of the watermark correlation (ME) of an image with " << rows << " rows and " << cols << " columns and parameters:\np = " << p << "  PSNR(dB) = " << psnr << "\n" << execution_time(show_fps, secs / loops) << "\n\n";
+		cout << std::format("Calculation of the watermark correlation (ME) of an image with {} rows and {} columns and parameters:\np = {}  PSNR(dB) = {}\n{}\n\n", rows, cols, p, psnr, execution_time(show_fps, secs / loops));
 
-		cout << "Correlation [NVF]: " << std::fixed << std::setprecision(16) << correlation_nvf << "\n";
-		cout << "Correlation [ME]: " << std::fixed << std::setprecision(16) << correlation_me << "\n";
+		cout << std::format("Correlation [NVF]: {:.16f}\n", correlation_nvf);
+		cout << std::format("Correlation [ME]: {:.16f}\n", correlation_me);
 
 		//save watermarked images to disk
 		if (inir.GetBoolean("options", "save_watermarked_files_to_disk", false)) {
@@ -157,7 +156,7 @@ int main(int argc, char** argv)
 
 //calculate execution time in seconds, or show FPS value
 string execution_time(const bool show_fps, const double seconds) {
-	return string(show_fps ? std::to_string(1 / seconds) + " FPS." : std::to_string(seconds) + " seconds.");
+	return show_fps ? std::format("FPS: {:.2f} FPS", 1.0 / seconds) : std::format("{:.6f} seconds", seconds);
 }
 
 //save the provided Eigen RGB array containing a watermarked image to disk

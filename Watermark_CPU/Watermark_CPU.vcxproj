@@ -78,6 +78,8 @@
       <FloatingPointModel>Fast</FloatingPointModel>
       <AdditionalOptions>-openmp -mavx2 -mfma /clang:-O3 %(AdditionalOptions)</AdditionalOptions>
       <OpenMPSupport>true</OpenMPSupport>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

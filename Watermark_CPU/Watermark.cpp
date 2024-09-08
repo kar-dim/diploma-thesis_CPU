@@ -72,7 +72,7 @@ ArrayXXf Watermark::compute_custom_mask(const ArrayXXf& image, const ArrayXXf& p
 EigenArrayRGB Watermark::make_and_add_watermark(MASK_TYPE mask_type) const {
 	ArrayXXf padded = ArrayXXf::Zero(padded_rows, padded_cols);
 	padded.block(pad, pad, (padded_rows - pad) - pad, (padded_cols - pad) - pad) = image;
-	ArrayXXf mask, u;
+	ArrayXXf mask;
 	if (mask_type == MASK_TYPE::NVF)
 		mask = compute_custom_mask(image, padded);
 	else {
@@ -80,10 +80,10 @@ EigenArrayRGB Watermark::make_and_add_watermark(MASK_TYPE mask_type) const {
 		VectorXf coefficients;
 		mask = compute_prediction_error_mask(padded, error_sequence, coefficients, ME_MASK_CALCULATION_REQUIRED_YES);
 	}
-	u = mask * w;
+	const ArrayXXf u = mask * w;
 	float divisor = std::sqrt(u.square().sum() / (rows * cols));
 	float a = (255.0f / std::sqrt(std::pow(10.0f, psnr / 10.0f))) / divisor;
-	const ArrayXXf u_strength = u * a;
+	const auto u_strength = u * a;
 	
 	EigenArrayRGB watermarked_image;
 #pragma omp parallel for
